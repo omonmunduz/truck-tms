@@ -1,0 +1,48 @@
+// Datatruck TMS - Project Scaffold
+
+// --- Root Files ---
+// docker-compose.yml
+
+version: '3.8'
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./frontend:/app
+    depends_on:
+      - backend
+
+  backend:
+    build: ./backend
+    ports:
+      - '4000:4000'
+    volumes:
+      - ./backend:/app
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/tms
+
+  db:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: tms
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+
+// --- frontend/README.md ---
+# Frontend (Next.js)
+This folder contains the frontend app built using Next.js and Tailwind CSS.
+
+// --- backend/README.md ---
+# Backend (Express.js)
+This folder contains the backend API using Express and Prisma ORM.
+Includes Plaid and Dwolla integration logic.
